@@ -36,6 +36,27 @@ export class ListComponent implements OnInit {
   public markers: any[];
   public images: Array<Imagenes>;
 
+  styles = [
+    {
+    "featureType": "transit",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+    },
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+            { visibility: "off" }
+      ]
+    },
+    {
+      "featureType": "landscape",
+      "stylers": [
+        { "visibility": "off" }
+      ]
+    }
+  ];
   constructor(private toastr: ToastrService, private _route: ActivatedRoute, private _router: Router,
     private _propiedadService: PropiedadService, private modal: NgbModal) {
     this.lat = 40.4167;
