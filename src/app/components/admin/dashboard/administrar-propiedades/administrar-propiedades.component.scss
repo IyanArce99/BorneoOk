@@ -1,0 +1,129 @@
+.bgDashboard{
+    background-color: #f9fafc;
+}
+
+section {
+    position: relative;
+}
+
+.dashboard-outer {
+    position: relative;
+    padding: 30px 30px 0;
+    height: 90vh;
+    width: 90vw;
+}
+
+
+.form-widget {
+    position: relative;
+}
+
+.ls-widget {
+    position: relative;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 4px rgb(0 0 0 / 10%);
+    margin-bottom: 30px;
+}
+
+.ls-widget .widget-title {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    background: #ffffff;
+    padding: 10px 30px;
+    border-bottom: 1px solid #f1f3f7;
+    min-height: 60px;
+}
+
+.ls-widget .widget-content {
+    position: relative;
+    padding: 30px 30px 10px;
+}
+
+.uploading-outer {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    width: 100%;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #f1f3f7;
+    margin-bottom: 30px;
+}
+
+.uploading-outer .uploadButton {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.uploadButton .uploadButton-input {
+    opacity: 0;
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    display: none;
+}
+
+.uploadButton .uploadButton-button {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    cursor: pointer;
+    height: 120px;
+    width: 200px;
+    border-radius: 5px;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    margin: 0;
+    color: #1b2032;
+    font-size: 16px;
+    border: 2px dashed #ced4e1;
+}
+
+.btn-style-two {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    color: #ffffff;
+    font-size: 16px;
+    border-radius: 10px;
+    background-color: #02023e;
+    font-weight: 700;
+    padding: 8px 30px;
+    border: 2px solid #02023e;
+    line-height: 30px;
+}
+
+.btn-style-two:hover {
+    color: #02023e;
+    background-color: transparent;
+}
+
+.theme-btn {
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    min-width: 150px;
+}
+
+.row{
+    margin-bottom: 10px;
+}

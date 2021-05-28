@@ -1,0 +1,44 @@
+<div class="divTotal">
+    <!--BUSCADOR Y FILTRAR POR-->
+    <div class="row separar">
+        <div class="col-lg-2 offset-lg-10 col-md-4 offset-md-8 col-12 margen">
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" (change)="cambiar($event.target.value)">
+                <option selected value="1">Más nuevos</option>
+                <option value="2">Más antiguos</option>
+            </select>
+        </div>
+        <!--
+        <div class="input-group col-lg-2 col-md-4 col-12">
+            <div class="input-group-prepend">
+                <div class="input-group-text" id="btnGroupAddon2"><i class="fas fa-search position"></i></div>
+            </div>
+            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Input group example"
+                aria-describedby="btnGroupAddon2">
+        </div>-->
+    </div>
+
+    <div class="row separar">
+        <div class="divCampos col-12 " *ngFor="let contacto of contactos">
+            <p class="pTop ">{{contacto.nombre}} <em>({{contacto.email}})</em></p>
+            <p><strong>Asunto:</strong> {{contacto.asunto}}</p>
+            <p><strong>Mensaje:</strong> {{contacto.mensaje}}</p>
+            <p><small>{{contacto.fecha}}</small></p>
+            <button type="button" class="eliminar" (click)="abrirModal(contacto.id)"><i class="fas fa-times-circle"></i></button>
+        </div>
+    </div>
+
+    <!--MODAL-->
+    <ng-template #modalContent let-modal>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Deseas borrar la propiedad?</h5>
+            </div>
+            <div class="modal-footer">
+                <button (click)="acceptDelete(idModal)" type="button" class="editar" data-dismiss="modal"><i
+                        class="fas fa-check"></i></button>
+                <button (click)="modal.close()" type="button" class="borrar" data-dismiss="modal"><i
+                        class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </ng-template>
+</div>

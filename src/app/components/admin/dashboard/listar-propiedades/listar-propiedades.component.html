@@ -1,0 +1,157 @@
+<div class="divTotal">
+    <!------------------------------------------------------------------------------------------------------------------------->
+    <!--FILTROS-->
+    <!--<div class="filtros">
+
+    </div>-->
+
+    <!------------------------------------------------------------------------------------------------------------------------->
+    <!--TABLA-->
+    <div class="table-hover table-responsive-sm">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col-md-1">Id Propiedad</th>
+                    <th scope="col-1">Nombre</th>
+                    <th scope="col-1">Capacidad</th>
+                    <th scope="col-1">Tarifa</th>
+                    <th scope="col-1">Tipo</th>
+                    <th scope="col-1">Direccion</th>
+                    <th scope="col-1">Barrio</th>
+                    <th scope="col-1">Ciudad</th>
+                    <th scope="col-1">C.autónoma</th>
+                    <th scope="col-1">Telefono</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let propiedad of propiedades">
+                    <th scope="row">{{propiedad.id}}</th>
+                    <td>{{propiedad.nombre}}</td>
+                    <td>{{propiedad.personas}}</td>
+                    <td>{{propiedad.tarifa}} euros</td>
+                    <td>{{propiedad.tipo_propiedad}}</td>
+                    <td>{{propiedad.direccion}}</td>
+                    <td>{{propiedad.barrio}}</td>
+                    <td>{{propiedad.ciudad}}</td>
+                    <td>{{propiedad.comunidad_autonoma}}</td>
+                    <td>{{propiedad.telefono}}</td>
+                    <td class="botones">
+                        <div>
+                            <button type="button" class="editar" [routerLink]="['/admin/dashboard/editPropertys',propiedad.id]"><i class="fas fa-pen"></i></button>
+                            <button type="button" class="borrar" (click)="abrirModal(propiedad.id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col-md-1">Nombre Propiedad</th>
+                    <th scope="col-1">Acceso</th>
+                    <th scope="col-1">Reuniones</th>
+                    <th scope="col-1">Recepcion</th>
+                    <th scope="col-1">Eventos</th>
+                    <th scope="col-1">Terraza</th>
+                    <th scope="col-1">Zona relax</th>
+                    <th scope="col-1">Seguridad</th>
+                    <th scope="col-1">Limpieza</th>
+                    <th scope="col-1">Certificado</th>
+                    <th scope="col-1">Paqueteria</th>
+                    <th scope="col-1">Parking</th>
+                    <th scope="col-1">Wifi</th>
+                    <th scope="col-1">Coworking</th>
+                    <th scope="col-1">Oficina privada</th>
+                    <th scope="col-1">Puesto fijo</th>
+                    <th scope="col-1">Puesto flexible</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let propiedad of propiedades">
+                    <th scope="row">{{propiedad.nombre}}</th>
+                    <td *ngIf="propiedad.access=='true'">Si</td>
+                    <td *ngIf="propiedad.access=='false'">No</td>
+
+                    <td *ngIf="propiedad.salas_reuniones=='true'">Si</td>
+                    <td *ngIf="propiedad.salas_reuniones=='false'">No</td>
+
+                    <td *ngIf="propiedad.reception=='true'">Si</td>
+                    <td *ngIf="propiedad.reception=='false'">No</td>
+
+                    <td *ngIf="propiedad.eventos_network=='true'">Si</td>
+                    <td *ngIf="propiedad.eventos_network=='false'">No</td>
+
+                    <td *ngIf="propiedad.terraza=='true'">Si</td>
+                    <td *ngIf="propiedad.terraza=='false'">No</td>
+
+                    <td *ngIf="propiedad.cafe_relax=='true'">Si</td>
+                    <td *ngIf="propiedad.cafe_relax=='false'">No</td>
+
+                    <td *ngIf="propiedad.seguridad=='true'">Si</td>
+                    <td *ngIf="propiedad.seguridad=='false'">No</td>
+
+                    <td *ngIf="propiedad.limpieza=='true'">Si</td>
+                    <td *ngIf="propiedad.limpieza=='false'">No</td>
+
+                    <td *ngIf="propiedad.cer_energetica=='true'">Si</td>
+                    <td *ngIf="propiedad.cer_energetica=='false'">No</td>
+
+                    <td *ngIf="propiedad.paqueteria=='true'">Si</td>
+                    <td *ngIf="propiedad.paqueteria=='false'">No</td>
+
+                    <td *ngIf="propiedad.parking=='true'">Si</td>
+                    <td *ngIf="propiedad.parking=='false'">No</td>
+
+                    <td *ngIf="propiedad.wifi=='true'">Si</td>
+                    <td *ngIf="propiedad.wifi=='false'">No</td>
+
+                    <td *ngIf="propiedad.coworking=='true'">Si</td>
+                    <td *ngIf="propiedad.coworking=='false'">No</td>
+
+                    <td *ngIf="propiedad.oficina_privada=='true'">Si</td>
+                    <td *ngIf="propiedad.oficina_privada=='false'">No</td>
+
+                    <td *ngIf="propiedad.puesto_fijo=='true'">Si</td>
+                    <td *ngIf="propiedad.puesto_fijo=='false'">No</td>
+
+                    <td *ngIf="propiedad.puesto_flexible=='true'">Si</td>
+                    <td *ngIf="propiedad.puesto_flexible=='false'">No</td>
+                    <td class="botones">
+                        <div>
+                            <button type="button" class="editar"><i class="fas fa-pen" [routerLink]="['/admin/dashboard/editPropertys',propiedad.id]"></i></button>
+                            <button type="button" class="borrar" (click)="abrirModal(propiedad.id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!------------------------------------------------------------------------------------------------------------------------->
+    <!--MODAL-->
+    <ng-template #modalContent let-modal>
+        <!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog-centered modal-dialog" role="document">-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Deseas borrar la propiedad?</h5>
+            </div>
+            <div class="modal-footer">
+                <button (click)="acceptDelete(idModal)" type="button" class="editar" data-dismiss="modal"><i
+                        class="fas fa-check"></i></button>
+                <button (click)="modal.close()" type="button" class="borrar" data-dismiss="modal"><i
+                        class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <!--</div>
+        </div>-->
+    </ng-template>
+</div>

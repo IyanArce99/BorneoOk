@@ -1,0 +1,39 @@
+.bg-menu {
+    background: #02023e;
+}
+
+#sidebar-wrapper {
+  height: 90vh;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.9rem;
+  background: #02023e;
+  color: white;
+  font-weight: 700;
+}
+
+#sidebar-wrapper .list-group {
+  width: auto;
+  background: #02023e;
+  padding: 30px 0;
+  text-align: center;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+.font-big {
+    font-size: 25px;
+    color: white;
+}

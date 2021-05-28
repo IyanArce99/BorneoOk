@@ -1,0 +1,27 @@
+<div class="wrapper d-flex align-items-center">
+
+    <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <!-------------------------------------LOGO--------------------------------------------------------------->
+        <div class="logo">
+            <img src="assets/images/logo-7.png" alt="" title="">
+        </div>
+        <!-------------------------------------TITULO ENCABEZADO-------------------------------------------------->
+        <h1 class="h3 mb-2 font-weight-normal text-center text-light">Iniciar sesión</h1>
+
+
+        <!-------------------------------------FORMULARIO--------------------------------------------------------->
+        <label for="inputEmail" class="sr-only">Usuario</label>
+        <input type="email" id="inputEmail" class="form-control mb-2" placeholder="Email" formControlName="email"
+            required>
+
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña"
+            formControlName="password" required>
+
+        <button class="btn btn-lg text-white btn-block bg-01" type="submit">Acceder</button>
+
+        <!-------------------------------------FOOTER-------------------------------------------------------------->
+        <p class="mt-5 mb-3 text-center text-light">&copy; 2021 Borneo</p>
+    </form>
+
+</div>

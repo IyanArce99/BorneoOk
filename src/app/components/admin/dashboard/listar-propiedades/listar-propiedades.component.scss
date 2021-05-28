@@ -1,0 +1,53 @@
+.divTotal{
+    padding: 30px 30px 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+}
+
+.botones{
+    width: 20%;
+}
+
+button{
+    margin-right: 5px;
+    border-color: transparent;
+    background-color: transparent;
+    border-style: none;
+}
+
+.editar{
+    color: #2AC83A;
+}
+
+.borrar{
+    color: red;
+}
+
+button:hover{
+    font-weight: bold;
+}
+
+i{
+    font-size: 20px;
+}
+
+th{
+    text-align: center;
+}
+
+td{
+    text-align: center;
+}
+
+thead{
+    border-top: none;
+}
+
+.separacion{
+    margin-top: 20px;
+}
+
+table{
+    margin-bottom: 25px;
+}

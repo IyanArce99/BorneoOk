@@ -1,0 +1,36 @@
+<div class="divTotal">
+    <!--BUSCADOR Y FILTRAR POR-->
+    <div class="row separar">
+        <div class="col-lg-2 offset-lg-10 col-md-2 offset-md-10 col-12 margen">
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" (change)="cambiar($event.target.value)">
+                <option selected value="1">Más nuevos</option>
+                <option value="2">Más antiguos</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row separar">
+        <div class="divCampos col-12 " *ngFor="let contacto of contactos">
+            <p class="pTop ">{{contacto.nombre}} <em>({{contacto.email}})</em></p>
+            <p><strong>Telefono:</strong> {{contacto.telefono}}</p>
+            <p><strong>Ciudad:</strong> {{contacto.ciudad}} <strong>Tarifa:</strong> {{contacto.tarifas}} euros <strong>Espacios:</strong> {{contacto.espacios}}</p>
+            <p><small>{{contacto.fecha_enviado}}</small></p>
+            <button type="button" class="eliminar" (click)="abrirModal(contacto.id)"><i class="fas fa-times-circle"></i></button>
+        </div>
+    </div>
+
+    <!--MODAL-->
+    <ng-template #modalContent let-modal>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Deseas borrar la propiedad?</h5>
+            </div>
+            <div class="modal-footer">
+                <button (click)="acceptDelete(idModal)" type="button" class="editar" data-dismiss="modal"><i
+                        class="fas fa-check"></i></button>
+                <button (click)="modal.close()" type="button" class="borrar" data-dismiss="modal"><i
+                        class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </ng-template>
+</div>

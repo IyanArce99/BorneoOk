@@ -1,0 +1,241 @@
+<div class="dashboard-outer">
+
+    <!--FORMULARIO -->
+    <div class="col-lg-12 col-md-10">
+        
+        <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+            <div class="form-widget ls-widget">
+                <!--CABECERA-->
+                <div class="widget-title">
+                    <h4><span class="fas fa-building icon"></span> Añadir Propiedad</h4>
+                </div>
+
+                <!--CONTENIDO-->
+                <div class="widget-content">
+                    <!--PARTE DEL FORMULARIO PARA AÑADIR UNA IMÁGEN-->
+                    <div class="uploading-outer">
+                        <div class="uploadButton">
+                            <input class="uploadButton-input" type="file" (change)="fileChangeEvent($event)" 
+                            id="upload" multiple/>
+
+                            <!--
+                            <div *ngIf="previsualizacion">
+                                <img [src]="previsualizacion" alt="" width="200px"> 
+                            </div>-->
+
+                            <label class="uploadButton-button ripple-effect" for="upload">Subir foto de
+                                propiedad</label>
+                            <span class="uploadButton-file-name"></span>
+                        </div>
+                    </div>
+
+                    <!-- Formulario -->
+                    <div class="default-form">
+                        <div class="row">
+
+                            <div class="col-md-3 col-12">
+                                <label>Nombre propiedad</label>
+                                <input type="text" formControlName="nombre" class="form-control"
+                                    placeholder="Nombre propiedad" required>
+                                <small *ngIf="nombreNoValido" class="text-danger">Sin espacios ni caracteres especiales, mínimo 3 letras.</small>
+                            </div>
+
+                            <div class="col-md-2 col-12">
+                                <label>Tarifa</label>
+                                <input type="text" formControlName="tarifa" class="form-control" placeholder="Tarifa"
+                                    required>
+                                <small *ngIf="tarifaNoValido" class="text-danger">Sin letras ni caracteres especiales</small>
+                            </div>
+
+                            <div class="col-md-2 col-12">
+                                <label>Capacidad</label>
+                                <input type="text" formControlName="personas" class="form-control"
+                                    placeholder="Capacidad" required>
+                                <small *ngIf="personasNoValido" class="text-danger">Sin letras ni caracteres especiales</small>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="mr-sm-2" for="inlineFormCustomSelect">Tipo de propiedad</label>
+                                <select class="custom-select mr-sm-2" formControlName="tipo_propiedad">
+                                    <option selected>Escoger...</option>
+                                    <option value="residencial">Residencial</option>
+                                    <option value="comercial">Comercial</option>
+                                    <option value="industrial">Industrial</option>
+                                    <option value="apartamentos">Apartamentos</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="access">
+                                    <label class="form-check-label">Acceso 24/7</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="salas_reuniones">
+                                    <label class="form-check-label">Reuniones</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="reception">
+                                    <label class="form-check-label">Recepción</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="eventos_network">
+                                    <label class="form-check-label">Eventos</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="terraza">
+                                    <label class="form-check-label">Terraza</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="cafe_relax">
+                                    <label class="form-check-label">Zona relax</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="seguridad">
+                                    <label class="form-check-label">Seguridad</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="limpieza">
+                                    <label class="form-check-label">Limpieza</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="cer_energetica">
+                                    <label class="form-check-label">Certificado</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="paqueteria">
+                                    <label class="form-check-label">Paqueteria</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="parking">
+                                    <label class="form-check-label">Parking</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="wifi">
+                                    <label class="form-check-label">Wifi</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="coworking">
+                                    <label class="form-check-label">Coworking</label>
+                                </div>
+                                <div class="form-check-inline col-md-1 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="oficina_privada">
+                                    <label class="form-check-label">Oficina privada</label>
+                                </div>
+                                <div class="form-check-inline col-md-2 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="puesto_fijo">
+                                    <label class="form-check-label">Puesto fijo en espacio abierto</label>
+                                </div>
+                                <div class="form-check-inline col-md-2 col-12">
+                                    <input class="form-check-input" type="checkbox" formControlName="puesto_flexible">
+                                    <label class="form-check-label">Puesto flexible no fijo</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 col-12">
+                                <label>Dirección</label>
+                                <input type="text" formControlName="direccion" class="form-control"
+                                    placeholder="Dirección" required>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <label>Barrio</label>
+                                <input type="text" formControlName="barrio" class="form-control"
+                                    placeholder="barrio de la ciudad" required>
+                                <small *ngIf="barrioNoValido" class="text-danger">No poner carácteres especiales</small>
+                            </div>
+                            <div class="col-md-2 col-12">
+                                <label>Ciudad</label>
+                                <input type="text" formControlName="ciudad" class="form-control" placeholder="Ciudad"
+                                    required>
+                                <small *ngIf="ciudadNoValido" class="text-danger">Sin caracteres especiales ni numeros</small>
+                            </div>
+
+                            <div class="col-md-2 col-12">
+                                <label>Comunidad Autónoma</label>
+                                <select class="custom-select mr-sm-2" formControlName="comunidad_autonoma">
+                                    <option value='alava'>Álava</option>
+                                    <option value='albacete'>Albacete</option>
+                                    <option value='alicante'>Alicante/Alacant</option>
+                                    <option value='almeria'>Almería</option>
+                                    <option value='asturias'>Asturias</option>
+                                    <option value='avila'>Ávila</option>
+                                    <option value='badajoz'>Badajoz</option>
+                                    <option value='barcelona'>Barcelona</option>
+                                    <option value='burgos'>Burgos</option>
+                                    <option value='caceres'>Cáceres</option>
+                                    <option value='cadiz'>Cádiz</option>
+                                    <option value='cantabria'>Cantabria</option>
+                                    <option value='castellon'>Castellón/Castelló</option>
+                                    <option value='ceuta'>Ceuta</option>
+                                    <option value='ciudadreal'>Ciudad Real</option>
+                                    <option value='cordoba'>Córdoba</option>
+                                    <option value='cuenca'>Cuenca</option>
+                                    <option value='girona'>Girona</option>
+                                    <option value='laspalmas'>Las Palmas</option>
+                                    <option value='granada'>Granada</option>
+                                    <option value='guadalajara'>Guadalajara</option>
+                                    <option value='guipuzcoa'>Guipúzcoa</option>
+                                    <option value='huelva'>Huelva</option>
+                                    <option value='huesca'>Huesca</option>
+                                    <option value='illesbalears'>Illes Balears</option>
+                                    <option value='jaen'>Jaén</option>
+                                    <option value='acoruña'>A Coruña</option>
+                                    <option value='larioja'>La Rioja</option>
+                                    <option value='leon'>León</option>
+                                    <option value='lleida'>Lleida</option>
+                                    <option value='lugo'>Lugo</option>
+                                    <option value='madrid'>Madrid</option>
+                                    <option value='malaga'>Málaga</option>
+                                    <option value='melilla'>Melilla</option>
+                                    <option value='murcia'>Murcia</option>
+                                    <option value='navarra'>Navarra</option>
+                                    <option value='ourense'>Ourense</option>
+                                    <option value='palencia'>Palencia</option>
+                                    <option value='pontevedra'>Pontevedra</option>
+                                    <option value='salamanca'>Salamanca</option>
+                                    <option value='segovia'>Segovia</option>
+                                    <option value='sevilla'>Sevilla</option>
+                                    <option value='soria'>Soria</option>
+                                    <option value='tarragona'>Tarragona</option>
+                                    <option value='santacruztenerife'>Santa Cruz de Tenerife</option>
+                                    <option value='teruel'>Teruel</option>
+                                    <option value='toledo'>Toledo</option>
+                                    <option value='valencia'>Valencia/Valéncia</option>
+                                    <option value='valladolid'>Valladolid</option>
+                                    <option value='vizcaya'>Vizcaya</option>
+                                    <option value='zamora'>Zamora</option>
+                                    <option value='zaragoza'>Zaragoza</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 col-12">
+                                <label>Telefono</label>
+                                <input type="text" formControlName="telefono" class="form-control"
+                                    placeholder="Telefono" required>
+                                <small *ngIf="telefonoNoValido" class="text-danger">solo numeros y en total nueve numeros</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="exampleFormControlTextarea1">Descripción</label>
+                                <textarea class="form-control" formControlName="descripcion" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <button class="theme-btn btn-style-two" type="submit" name="submit-form">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </form>
+    </div>
+</div>
