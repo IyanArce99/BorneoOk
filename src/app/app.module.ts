@@ -73,7 +73,9 @@ import { LoginComponent } from './components/admin/login/login.component';
     NgxPaginationModule,
     NgxFileDropModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDAcpz5ILxdpgV_1MjXA5tPd8TkR0viysw'
+        apiKey: 'AIzaSyDAcpz5ILxdpgV_1MjXA5tPd8TkR0viysw',
+        libraries: ["places"],
+        apiVersion: 'quarterly'
     })
   ],
   providers: [],

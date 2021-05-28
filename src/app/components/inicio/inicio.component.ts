@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,  TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild,  TemplateRef, ElementRef, NgZone } from '@angular/core';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {PropiedadService} from '../../services/propiedad.service';
@@ -7,6 +7,7 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import { FormControl } from "@angular/forms";
 import { Imagenes } from 'src/app/models/images';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-inicio',
@@ -34,15 +35,48 @@ export class InicioComponent implements OnInit {
   public contadorImagenes=0;
   public urlImage;
 
+  private geoCoder;
+  public searchElementRef: ElementRef;
+
   constructor(private toastr: ToastrService, private _route:ActivatedRoute,private _router:Router, 
-    private _propiedadService: PropiedadService, private modal: NgbModal, config: NgbCarouselConfig) {
+    private _propiedadService: PropiedadService, private modal: NgbModal, config: NgbCarouselConfig, private mapsApi: MapsAPILoader, private ngZone: NgZone) {
     config.interval = 4000;
     config.wrap = true;
     config.keyboard = false;
     config.pauseOnHover = false;
+
+   
   }
 
-  search() {
+  ngOnInit(): void {
+    this.selected.valueChanges.subscribe(changes => {
+      this.Opciones(changes);
+    });
+    this.getOwned();
+
+    this.mapsApi.load().then(() => {
+      this.geoCoder = new google.maps.Geocoder;
+      console.log(this.searchElementRef.nativeElement)
+      console.log( new google.maps.places.Autocomplete(this.searchElementRef.nativeElement))
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+           //verify result
+           if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+           //set latitude, longitude and zoom
+           console.log(place.geometry.location.lat());
+           console.log(place.geometry.location.lng());
+           
+        });
+      });
+    });
+  }
+
+  searchAction() {
     this._router.navigate(['/view/list',this.opc]);
   }
 
@@ -136,16 +170,7 @@ export class InicioComponent implements OnInit {
 
   imgSelected(imgurl){
     this.urlImage=imgurl;
-    console.log(this.urlImage);
     return this.urlImage;
   }
-
-  ngOnInit(): void {
-    this.selected.valueChanges.subscribe(changes => {
-      this.Opciones(changes);
-    });
-    this.getOwned();
-  }
-
 
 }

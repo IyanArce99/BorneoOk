@@ -190,7 +190,7 @@
 
                     <!-------------------------------------GOOGLE MAPS------------------------------------------------------------------------------>
                     <div class="col-6">
-                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [mapTypeId]="mapTypeId" [styles]='styles'>
+                        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [mapTypeId]="mapTypeId" [styles]='styles' (mapReady)="mapReadyHandler($event)">
                             <agm-marker *ngFor="let marker of markers" [latitude]="marker.position.lat"
                                 [longitude]="marker.position.lng" [label]="marker.label" [zoom]="zoom">
                             </agm-marker>

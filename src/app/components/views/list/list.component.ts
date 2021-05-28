@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { PropiedadService } from '../../../services/propiedad.service';
@@ -35,7 +35,8 @@ export class ListComponent implements OnInit {
   public mapTypeId: string;
   public markers: any[];
   public images: Array<Imagenes>;
-
+  map: google.maps.Map;
+  mapClickListener: google.maps.MapsEventListener;
   styles = [
     {
     "featureType": "transit",
@@ -58,11 +59,46 @@ export class ListComponent implements OnInit {
     }
   ];
   constructor(private toastr: ToastrService, private _route: ActivatedRoute, private _router: Router,
-    private _propiedadService: PropiedadService, private modal: NgbModal) {
+    private _propiedadService: PropiedadService, private modal: NgbModal, private zone: NgZone) {
     this.lat = 40.4167;
     this.lng = -3.70325;
     this.zoom = 15;
-    this.markers = [];
+    this.markers = [{
+      position: {
+        lat: 40.41576073662698,
+        lng: -3.709779516992553
+      },
+      label: ''
+    },
+    {
+      position: {
+        lat: 40.43255309012094,
+        lng: -3.7046725910281975
+      },
+      label: ''
+    },
+    {
+      position: {
+        lat: 40.41696966473993,
+        lng: -3.6906821888065178
+      },
+      label: ''
+    },
+    {
+      position: {
+        lat: 40.42206652819238,
+        lng: -3.7068183582401115
+      },
+      label: ''
+    },
+    {
+      position: {
+        lat: 40.446764060827554,
+        lng: -3.6908494526940983
+      },
+      label: ''
+    }
+  ];
     this.mapTypeId = 'roadmap';
   }
 
@@ -71,6 +107,29 @@ export class ListComponent implements OnInit {
     this.opc = opc1;
   }
 
+  
+  public mapReadyHandler(map: google.maps.Map): void {
+    this.map = map;
+    this.mapClickListener = this.map.addListener('click', (e: google.maps.MouseEvent) => {
+      this.zone.run(() => {
+        // Here we can get correct event
+        let marker = {
+          position: {
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng()
+          }
+          ,label: 'mesi'
+        }
+       // this.markers.push(marker)
+        console.log(e.latLng.lat(), e.latLng.lng());
+      });
+    });
+  }
+  public ngOnDestroy(): void {
+    if (this.mapClickListener) {
+      this.mapClickListener.remove();
+    }
+  }
   search() {
     //METODO PARA BUSCAR
     this.ciudad = this._route.snapshot.params['ciudad'];

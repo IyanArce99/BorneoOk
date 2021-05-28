@@ -15,7 +15,9 @@
                     <p>Encuentra tu oficina ideal para trabajar, aprender o enseñar 
                         por el tiempo que necesites y completamente equipada.</p>
                 </div>
-
+                <div id="pac-container">
+                    <input #search id="pac-input" type="text" placeholder="Enter a location">
+                  </div>
                 <!-- Listing Search Tabs -->
                 <div class="listing-search-tabs tabs-box">
                     <ul class="tab-buttons">
@@ -61,7 +63,7 @@
                                         <!-- Form Group -->
                                         <div class="form-group col-lg-2 col-md-6 col-sm-12 text-right">
                                             <button type="submit" class="theme-btn btn-style-one bg-pink"
-                                                (click)="search()">Buscar</button>
+                                                (click)="searchAction()">Buscar</button>
                                         </div>
                                     </div>
                                 </form>
