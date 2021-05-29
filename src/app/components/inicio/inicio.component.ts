@@ -131,7 +131,8 @@ export class InicioComponent implements OnInit {
             if(this.contador<3){
               this.id=element.id;
               this.propiedadesFiltradas[this.contador]=element;
-              this.listarImagenes(this.id);
+              this.setImg(this.id, element);
+              //element.imgUrl = this.listarImagenes(this.id);
             }
             this.contador++;
           });
@@ -141,36 +142,28 @@ export class InicioComponent implements OnInit {
         }
     );
   }
-
-  listarImagenes(id){
-    var imgurl;
-    this.contadorImagenes=0;
+ 
+  setImg(id, element: Owned) {
+    let urlDefault: string = '';
     this._propiedadService.listarimagenes(id).subscribe(
       response => {
-        this.images = response;
-        if(this.images.length==0){
-          imgurl="";
-          console.log("contadorFuera: ",this.contadorImagenes);
-        }else{
-          this.images.forEach(element => {
-            element.imagen=element.imagen.slice(2,-2);
-            if(this.contadorImagenes==0){
-              imgurl=element.imagen;
-              this.imgSelected(imgurl);
-            }
-            console.log("contadorDentro: ",this.contadorImagenes);
-            this.contadorImagenes++;
-          });
+        if (response) {
+          if (response.length === 0) {
+            element.imgUrl = urlDefault;
+          }else {
+            // Revisar porque la imagen viene en este formato: ["imgurl"]
+            element.imgUrl = response[0].imagen.replace('[','').replace(']','').replace('"', '').replace('"','');
+          }
+
         }
-      }, error => {
+      },
+      error => {
         console.log(<any>error);
       }
-    ); 
+    )
+
+    element.imgUrl = urlDefault;
   }
 
-  imgSelected(imgurl){
-    this.urlImage=imgurl;
-    return this.urlImage;
-  }
 
 }
