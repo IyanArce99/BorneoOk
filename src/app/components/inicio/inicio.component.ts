@@ -8,6 +8,7 @@ import { FormControl } from "@angular/forms";
 import { Imagenes } from 'src/app/models/images';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MapsAPILoader } from '@agm/core';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-inicio',
@@ -36,7 +37,7 @@ export class InicioComponent implements OnInit {
   public urlImage;
 
   private geoCoder;
-  public searchElementRef: ElementRef;
+  @ViewChild("search") public searchElementRef: ElementRef;
 
   constructor(private toastr: ToastrService, private _route:ActivatedRoute,private _router:Router, 
     private _propiedadService: PropiedadService, private modal: NgbModal, config: NgbCarouselConfig, private mapsApi: MapsAPILoader, private ngZone: NgZone) {
@@ -45,17 +46,10 @@ export class InicioComponent implements OnInit {
     config.keyboard = false;
     config.pauseOnHover = false;
 
-   
-  }
-
-  ngOnInit(): void {
-    this.selected.valueChanges.subscribe(changes => {
-      this.Opciones(changes);
-    });
-    this.getOwned();
-
     this.mapsApi.load().then(() => {
       this.geoCoder = new google.maps.Geocoder;
+      
+      console.log(this.geoCoder)
       console.log(this.searchElementRef.nativeElement)
       console.log( new google.maps.places.Autocomplete(this.searchElementRef.nativeElement))
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
@@ -74,6 +68,13 @@ export class InicioComponent implements OnInit {
         });
       });
     });
+  }
+
+  ngOnInit(): void {
+    this.selected.valueChanges.subscribe(changes => {
+      this.Opciones(changes);
+    });
+    this.getOwned();
   }
 
   searchAction() {
