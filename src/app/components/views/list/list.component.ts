@@ -28,7 +28,7 @@ export class ListComponent implements OnInit {
   public contadorComprobador = 0;
   public ciudad: string;
   public id;
-
+  
   public lat: number;
   public lng: number;
   public zoom: number;
@@ -63,42 +63,7 @@ export class ListComponent implements OnInit {
     this.lat = 40.4167;
     this.lng = -3.70325;
     this.zoom = 15;
-    this.markers = [{
-      position: {
-        lat: 40.41576073662698,
-        lng: -3.709779516992553
-      },
-      label: ''
-    },
-    {
-      position: {
-        lat: 40.43255309012094,
-        lng: -3.7046725910281975
-      },
-      label: ''
-    },
-    {
-      position: {
-        lat: 40.41696966473993,
-        lng: -3.6906821888065178
-      },
-      label: ''
-    },
-    {
-      position: {
-        lat: 40.42206652819238,
-        lng: -3.7068183582401115
-      },
-      label: ''
-    },
-    {
-      position: {
-        lat: 40.446764060827554,
-        lng: -3.6908494526940983
-      },
-      label: ''
-    }
-  ];
+    this.markers;
     this.mapTypeId = 'roadmap';
   }
 
@@ -234,11 +199,32 @@ export class ListComponent implements OnInit {
             this.contador++;
           }
         });
+        this.setMarkers();
+        // Nos posicionamos en el primer marker      
+        this.lat = Number(this.markers[0].position.lat);
+        this.lng = Number(this.markers[0].position.lng);
+
       },
       error => {
         console.log(<any>error);
       }
     );
+  }
+
+  setMarkers(): void {
+    this.markers = this.propiedadesFiltradas.map(prop => {
+      if (prop.lat && prop.lng) {
+        return {
+          position: {
+            lat: prop.lat,
+            lng: prop.lng
+          }
+          ,label: ''
+        };
+      
+      }
+      return;
+    })
   }
 
   listarImagenes(){

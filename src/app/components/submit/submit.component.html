@@ -65,7 +65,7 @@
                                             <small *ngIf="telefonoNoValido" class="text-danger">Formato telefono incorrecto (ejemplo: 123456789)</small>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 form-group">
-                                            <input type="text" formControlName="ciudad" class="form-control" placeholder="Ciudad interes *" required>
+                                            <input type="text" #search formControlName="ciudad" class="form-control" placeholder="Ciudad interes *" required>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                                             <input type="text" formControlName="tarifas" class="form-control" placeholder="Tarifas *" required>

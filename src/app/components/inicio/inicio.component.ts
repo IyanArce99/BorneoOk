@@ -36,38 +36,12 @@ export class InicioComponent implements OnInit {
   public contadorImagenes=0;
   public urlImage;
 
-  private geoCoder;
-  @ViewChild("search") public searchElementRef: ElementRef;
-
   constructor(private toastr: ToastrService, private _route:ActivatedRoute,private _router:Router, 
-    private _propiedadService: PropiedadService, private modal: NgbModal, config: NgbCarouselConfig, private mapsApi: MapsAPILoader, private ngZone: NgZone) {
+    private _propiedadService: PropiedadService, private modal: NgbModal, config: NgbCarouselConfig) {
     config.interval = 4000;
     config.wrap = true;
     config.keyboard = false;
     config.pauseOnHover = false;
-
-    this.mapsApi.load().then(() => {
-      this.geoCoder = new google.maps.Geocoder;
-      
-      console.log(this.geoCoder)
-      console.log(this.searchElementRef.nativeElement)
-      console.log( new google.maps.places.Autocomplete(this.searchElementRef.nativeElement))
-      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          //get the place result
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-           //verify result
-           if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-           //set latitude, longitude and zoom
-           console.log(place.geometry.location.lat());
-           console.log(place.geometry.location.lng());
-           
-        });
-      });
-    });
   }
 
   ngOnInit(): void {
@@ -133,7 +107,6 @@ export class InicioComponent implements OnInit {
               this.id=element.id;
               this.propiedadesFiltradas[this.contador]=element;
               this.setImg(this.id, element);
-              //element.imgUrl = this.listarImagenes(this.id);
             }
             this.contador++;
           });

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PropiedadService } from '../../../../services/propiedad.service';
 import { Owned } from '../../../../models/owned';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Imagenes } from 'src/app/models/images';
+import { MapsAPILoader } from '@agm/core';
+import { GeoService, LocationInfo } from 'src/app/services/geo.service';
 
 @Component({
   selector: 'app-administrar-propiedades',
@@ -12,13 +14,16 @@ import { Imagenes } from 'src/app/models/images';
   styleUrls: ['./administrar-propiedades.component.scss'],
   providers: [PropiedadService]
 })
-export class AdministrarPropiedadesComponent {
+export class AdministrarPropiedadesComponent implements OnInit {
   public propiedad: Owned;
   public propiedades: Array<Owned>;
   public filesToUpload: any = [];
   public img: Imagenes;
   public idPropiedades;
   //public previsualizacion:string;
+  private geoCoder;
+  @ViewChild("search") public searchElementRef: ElementRef;
+  locationInfo: LocationInfo;
 
   propertyForm = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-ZñÑ]{3,50}$")]),
@@ -50,7 +55,29 @@ export class AdministrarPropiedadesComponent {
   });
 
   constructor(private _route: ActivatedRoute, private _router: Router, private _propiedadService: PropiedadService,
-    private fb: FormBuilder, private sanitizer: DomSanitizer) {
+    private fb: FormBuilder, private sanitizer: DomSanitizer, private mapsApi: MapsAPILoader, private ngZone: NgZone) {
+  }
+  
+  ngOnInit(): void {
+    this.mapsApi.load().then(() => {
+      this.geoCoder = new google.maps.Geocoder;
+      
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+           //verify result
+           if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+          let locationInfo: LocationInfo = GeoService.getProvince(place.formatted_address);
+          locationInfo.lat = place.geometry.location.lat();
+          locationInfo.lng = place.geometry.location.lng();
+          this.locationInfo = locationInfo;
+        });
+      });
+    });
   }
 
   get nombreNoValido() {
@@ -189,6 +216,8 @@ export class AdministrarPropiedadesComponent {
       this.propertyForm.get('puesto_flexible').setValue("false");
     }
 
+    this.propertyForm.value.lat =this.locationInfo.lat;
+    this.propertyForm.value.lng =this.locationInfo.lng;
     //subscribe para añadir la propiedad
     this._propiedadService.addPropiedad(this.propertyForm.value).subscribe(
       result => {
