@@ -77,16 +77,8 @@ export class ListComponent implements OnInit {
     this.map = map;
     this.mapClickListener = this.map.addListener('click', (e: google.maps.MouseEvent) => {
       this.zone.run(() => {
-        // Here we can get correct event
-        let marker = {
-          position: {
-            lat: e.latLng.lat(),
-            lng: e.latLng.lng()
-          }
-          ,label: 'mesi'
-        }
-       // this.markers.push(marker)
-        console.log(e.latLng.lat(), e.latLng.lng());
+        // this.markers.push(marker)
+        //console.log(e.latLng.lat(), e.latLng.lng());
       });
     });
   }
