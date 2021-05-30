@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PropiedadService } from '../../../../services/propiedad.service';
 import { Owned } from '../../../../models/owned';
 import { Imagenes } from 'src/app/models/images';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { GeoService, LocationInfo } from 'src/app/services/geo.service';
+import { MapsAPILoader } from '@agm/core';
 
 @Component({
     selector: 'app-editar-propiedades',
@@ -12,12 +14,15 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
     providers: [PropiedadService]
 })
 
-export class EditarPropiedadesComponent {
+export class EditarPropiedadesComponent implements OnInit {
     public propiedad: Owned;
     public propiedades: Array<Owned>;
     public filesToUpload: any = [];
     public img: Imagenes;
     public imagenesComprobar: Array<Imagenes>;
+    private geoCoder;
+    @ViewChild("search") public searchElementRef: ElementRef;
+    locationInfo: LocationInfo;
 
     get nombreNoValido() {
         return this.propertyForm.get("nombre").invalid && this.propertyForm.get("nombre").touched;
@@ -37,6 +42,30 @@ export class EditarPropiedadesComponent {
     get telefonoNoValido() {
         return this.propertyForm.get("telefono").invalid && this.propertyForm.get("telefono").touched;
     }
+
+    ngOnInit(): void {
+        this.recogerDato();
+
+        this.mapsApi.load().then(() => {
+          this.geoCoder = new google.maps.Geocoder;
+          
+          const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+          autocomplete.addListener("place_changed", () => {
+            this.ngZone.run(() => {
+              //get the place result
+              const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+               //verify result
+               if (place.geometry === undefined || place.geometry === null) {
+                return;
+              }
+              let locationInfo: LocationInfo = GeoService.getProvince(place.formatted_address);
+              locationInfo.lat = place.geometry.location.lat();
+              locationInfo.lng = place.geometry.location.lng();
+              this.locationInfo = locationInfo;
+            });
+          });
+        });
+      }
 
     propertyForm = new FormGroup({
         nombre: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-ZñÑ]{3,50}$")]),
@@ -68,7 +97,7 @@ export class EditarPropiedadesComponent {
     });
 
     constructor(private _route: ActivatedRoute, private _router: Router, private _propiedadService: PropiedadService,
-        private fb: FormBuilder) {
+        private fb: FormBuilder, private mapsApi: MapsAPILoader, private ngZone: NgZone) {
     }
 
     recogerDato() {
@@ -172,6 +201,12 @@ export class EditarPropiedadesComponent {
                         this.propertyForm.get('ciudad').setValue(this.propiedad[i].ciudad);
                         this.propertyForm.get('comunidad_autonoma').setValue(this.propiedad[i].comunidad_autonoma);
                         this.propertyForm.get('telefono').setValue(this.propiedad[i].telefono);
+                        if (this.propiedad[i].lat){
+                           this.propertyForm.value.lat = this.propiedad[i].lat; 
+                        }
+                        if (this.propiedad[i].lng){
+                            this.propertyForm.value.lng = this.propiedad[i].lng; 
+                         }                        
                     }
                 }, error => {
                     console.log(<any>error);
@@ -288,6 +323,13 @@ export class EditarPropiedadesComponent {
                 this.propertyForm.get('puesto_flexible').setValue("false");
             }
 
+            if (this.locationInfo && this.locationInfo.lat) {
+                this.propertyForm.value.lat = this.locationInfo.lat;
+            }
+            if (this.locationInfo && this.locationInfo.lng) {
+                this.propertyForm.value.lng = this.locationInfo.lng;
+            }
+
             this._propiedadService.editPropiedad(id, this.propertyForm.value).subscribe(
                 result => {
                     if (this.filesToUpload.length == 0) {
@@ -310,7 +352,6 @@ export class EditarPropiedadesComponent {
             this._propiedadService.listarimagenes(id).subscribe(
                 response => {
                     this.imagenesComprobar = response;
-                    console.log(this.imagenesComprobar);
 
                     if (this.imagenesComprobar.length==0) {
                         for (let i = 0; i < this.filesToUpload.length; i++) {
@@ -319,7 +360,6 @@ export class EditarPropiedadesComponent {
                             this.guardarImagen();
                         }
                     } else {
-                        console.log("entra");
                         this.borrarImagen();
                     }
                 }, error => {
@@ -363,10 +403,6 @@ export class EditarPropiedadesComponent {
         for (let i = 0; i < fileInput.target.files.length; i++) {
             this.filesToUpload.push(fileInput.target.files[i]);
         }
-    }
-
-    ngOnInit() {
-        this.recogerDato();
     }
 
 }

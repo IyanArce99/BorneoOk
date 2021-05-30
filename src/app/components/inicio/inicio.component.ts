@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,  TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild,  TemplateRef, ElementRef, NgZone } from '@angular/core';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {PropiedadService} from '../../services/propiedad.service';
@@ -7,6 +7,8 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import { FormControl } from "@angular/forms";
 import { Imagenes } from 'src/app/models/images';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { MapsAPILoader } from '@agm/core';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-inicio',
@@ -42,7 +44,14 @@ export class InicioComponent implements OnInit {
     config.pauseOnHover = false;
   }
 
-  search() {
+  ngOnInit(): void {
+    this.selected.valueChanges.subscribe(changes => {
+      this.Opciones(changes);
+    });
+    this.getOwned();
+  }
+
+  searchAction() {
     this._router.navigate(['/view/list',this.opc]);
   }
 
@@ -97,8 +106,9 @@ export class InicioComponent implements OnInit {
             if(this.contador<3){
               this.id=element.id;
               this.propiedadesFiltradas[this.contador]=element;
-              this.listarImagenes(this.id);
             }
+            this.setImg(this.id, element);
+
             this.contador++;
           });
         },
@@ -107,44 +117,27 @@ export class InicioComponent implements OnInit {
         }
     );
   }
-
-  listarImagenes(id){
-    var imgurl;
-    this.contadorImagenes=0;
+ 
+  setImg(id, element: Owned) {
+    let urlDefault: string = 'assets/images/view/office3.png';
     this._propiedadService.listarimagenes(id).subscribe(
       response => {
-        this.images = response;
-        if(this.images.length==0){
-          imgurl="";
-          console.log("contadorFuera: ",this.contadorImagenes);
-        }else{
-          this.images.forEach(element => {
-            element.imagen=element.imagen.slice(2,-2);
-            if(this.contadorImagenes==0){
-              imgurl=element.imagen;
-              this.imgSelected(imgurl);
-            }
-            console.log("contadorDentro: ",this.contadorImagenes);
-            this.contadorImagenes++;
-          });
+        if (response) {
+          if (response.length === 0) {
+            element.imgUrl = urlDefault;
+          }else {
+            // Revisar porque la imagen viene en este formato: ["imgurl"]
+            element.imgUrl = 'http://borneoflex.es/borneo/uploads/' + response[0].imagen.replace('[','').replace(']','').replace('"', '').replace('"','');
+          }
+
         }
-      }, error => {
+      },
+      error => {
         console.log(<any>error);
       }
-    ); 
-  }
+    )
 
-  imgSelected(imgurl){
-    this.urlImage=imgurl;
-    console.log(this.urlImage);
-    return this.urlImage;
-  }
-
-  ngOnInit(): void {
-    this.selected.valueChanges.subscribe(changes => {
-      this.Opciones(changes);
-    });
-    this.getOwned();
+    element.imgUrl = urlDefault;
   }
 
 

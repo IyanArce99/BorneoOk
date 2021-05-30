@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { PropiedadService } from '../../../services/propiedad.service';
@@ -28,20 +28,42 @@ export class ListComponent implements OnInit {
   public contadorComprobador = 0;
   public ciudad: string;
   public id;
-
+  
   public lat: number;
   public lng: number;
   public zoom: number;
   public mapTypeId: string;
   public markers: any[];
   public images: Array<Imagenes>;
-
+  map: google.maps.Map;
+  mapClickListener: google.maps.MapsEventListener;
+  styles = [
+    {
+    "featureType": "transit",
+    "stylers": [
+      { "visibility": "off" }
+    ]
+    },
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+            { visibility: "off" }
+      ]
+    },
+    {
+      "featureType": "landscape",
+      "stylers": [
+        { "visibility": "off" }
+      ]
+    }
+  ];
   constructor(private toastr: ToastrService, private _route: ActivatedRoute, private _router: Router,
-    private _propiedadService: PropiedadService, private modal: NgbModal) {
+    private _propiedadService: PropiedadService, private modal: NgbModal, private zone: NgZone) {
     this.lat = 40.4167;
     this.lng = -3.70325;
     this.zoom = 15;
-    this.markers = [];
+    this.markers;
     this.mapTypeId = 'roadmap';
   }
 
@@ -50,6 +72,21 @@ export class ListComponent implements OnInit {
     this.opc = opc1;
   }
 
+  
+  public mapReadyHandler(map: google.maps.Map): void {
+    this.map = map;
+    this.mapClickListener = this.map.addListener('click', (e: google.maps.MouseEvent) => {
+      this.zone.run(() => {
+        // this.markers.push(marker)
+        //console.log(e.latLng.lat(), e.latLng.lng());
+      });
+    });
+  }
+  public ngOnDestroy(): void {
+    if (this.mapClickListener) {
+      this.mapClickListener.remove();
+    }
+  }
   search() {
     //METODO PARA BUSCAR
     this.ciudad = this._route.snapshot.params['ciudad'];
@@ -154,24 +191,53 @@ export class ListComponent implements OnInit {
             this.contador++;
           }
         });
+        this.setMarkers();
+        // Nos posicionamos en el primer marker      
+        this.lat = Number(this.markers[0].position.lat);
+        this.lng = Number(this.markers[0].position.lng);
+        this.listarImagenes();
       },
       error => {
         console.log(<any>error);
       }
     );
+
+
+  }
+
+  setMarkers(): void {
+    this.markers = this.propiedadesFiltradas.map(prop => {
+      if (prop.lat && prop.lng) {
+        return {
+          position: {
+            lat: prop.lat,
+            lng: prop.lng
+          }
+          ,label: ''
+        };
+      
+      }
+      return;
+    })
   }
 
   listarImagenes(){
-    this._propiedadService.listarimagenes(this.id).subscribe(
-      response => {
-        this.images = response;
-        this.images.forEach(element => {
-          element.imagen=element.imagen.slice(2,-2);
-        });
-      }, error => {
-        console.log(<any>error);
-      }
-    );
+    this.propiedadesFiltradas.forEach(prop => {
+      this._propiedadService.listarimagenes(prop.id).subscribe(
+        response => {
+          let images = response;
+          images.forEach(element => {
+            element.imagen=element.imagen.slice(2,-2);
+          });
+          
+          prop.imgUrl = images[0] && images[0].imagen ? 'http://borneoflex.es/borneo/uploads/' + images[0].imagen : 'assets/images/view/office3.png';
+          
+        }, error => {
+          console.log(<any>error);
+        }
+      );
+    });
+
   }
 
   ngOnInit(): void {

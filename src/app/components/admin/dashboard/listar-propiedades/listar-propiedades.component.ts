@@ -40,6 +40,7 @@ export class ListarPropiedadesComponent implements OnInit {
   getOwned(){
     this._propiedadService.getOwned().subscribe(
         result => {
+          console.log(result)
             this.propiedades = result;
         },
         error => {
