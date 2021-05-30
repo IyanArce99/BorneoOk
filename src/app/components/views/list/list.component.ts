@@ -203,12 +203,14 @@ export class ListComponent implements OnInit {
         // Nos posicionamos en el primer marker      
         this.lat = Number(this.markers[0].position.lat);
         this.lng = Number(this.markers[0].position.lng);
-
+        this.listarImagenes();
       },
       error => {
         console.log(<any>error);
       }
     );
+
+
   }
 
   setMarkers(): void {
@@ -228,16 +230,25 @@ export class ListComponent implements OnInit {
   }
 
   listarImagenes(){
-    this._propiedadService.listarimagenes(this.id).subscribe(
-      response => {
-        this.images = response;
-        this.images.forEach(element => {
-          element.imagen=element.imagen.slice(2,-2);
-        });
-      }, error => {
-        console.log(<any>error);
-      }
-    );
+    this.propiedadesFiltradas.forEach(prop => {
+      this._propiedadService.listarimagenes(prop.id).subscribe(
+        response => {
+          let images = response;
+          images.forEach(element => {
+            element.imagen=element.imagen.slice(2,-2);
+          });
+          prop.imgUrl = images[0];
+          if (!prop.imgUrl){
+            prop.imgUrl = {
+              imagen: 'assets/images/view/office3.png'
+            }
+          }
+        }, error => {
+          console.log(<any>error);
+        }
+      );
+    });
+
   }
 
   ngOnInit(): void {
