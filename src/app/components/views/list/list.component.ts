@@ -237,12 +237,9 @@ export class ListComponent implements OnInit {
           images.forEach(element => {
             element.imagen=element.imagen.slice(2,-2);
           });
-          prop.imgUrl = images[0];
-          if (!prop.imgUrl){
-            prop.imgUrl = {
-              imagen: 'assets/images/view/office3.png'
-            }
-          }
+          
+          prop.imgUrl = images[0] && images[0].imagen ? 'http://borneoflex.es/borneo/uploads/' + images[0].imagen : 'assets/images/view/office3.png';
+          
         }, error => {
           console.log(<any>error);
         }

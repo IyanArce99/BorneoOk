@@ -129,7 +129,7 @@
                                     *ngFor="let propiedad of propiedadesFiltradas | paginate: { itemsPerPage: 2, currentPage: page }">
                                     <div class="inner-box">
                                         <div class="image-box">
-                                            <figure class="image"><img src="assets/images/view/office3.png" alt="">
+                                            <figure class="image"><img [src]="propiedad.imgUrl" alt="">
                                             </figure>
                                             <div class="tags">
                                                 <!--<span>+{{propiedad.personas}} personas</span>

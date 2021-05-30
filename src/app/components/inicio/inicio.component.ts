@@ -106,8 +106,9 @@ export class InicioComponent implements OnInit {
             if(this.contador<3){
               this.id=element.id;
               this.propiedadesFiltradas[this.contador]=element;
-              this.setImg(this.id, element);
             }
+            this.setImg(this.id, element);
+
             this.contador++;
           });
         },
@@ -118,7 +119,7 @@ export class InicioComponent implements OnInit {
   }
  
   setImg(id, element: Owned) {
-    let urlDefault: string = '';
+    let urlDefault: string = 'assets/images/view/office3.png';
     this._propiedadService.listarimagenes(id).subscribe(
       response => {
         if (response) {
@@ -126,7 +127,7 @@ export class InicioComponent implements OnInit {
             element.imgUrl = urlDefault;
           }else {
             // Revisar porque la imagen viene en este formato: ["imgurl"]
-            element.imgUrl = response[0].imagen.replace('[','').replace(']','').replace('"', '').replace('"','');
+            element.imgUrl = 'http://borneoflex.es/borneo/uploads/' + response[0].imagen.replace('[','').replace(']','').replace('"', '').replace('"','');
           }
 
         }
