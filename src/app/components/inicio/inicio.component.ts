@@ -107,7 +107,7 @@ export class InicioComponent implements OnInit {
               this.id=element.id;
               this.propiedadesFiltradas[this.contador]=element;
             }
-            this.setImg(this.id, element);
+            this.setImg(element.id, element);
 
             this.contador++;
           });
